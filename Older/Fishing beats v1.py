@@ -33,10 +33,10 @@ px = 0
 def ImgLoad(image,num):
     image = image + ".png"
     if num == 1:#things
-        imgS = pygame.image.load(os.path.join('Assets', image)).convert_alpha()
+        imgS = pygame.image.load(os.path.join('../Assets', image)).convert_alpha()
         imgS = pygame.transform.scale(imgS, (width,height))
     elif num == 2:#stuff
-        imgS = pygame.image.load(os.path.join('Assets', image)).convert_alpha()
+        imgS = pygame.image.load(os.path.join('../Assets', image)).convert_alpha()
     return imgS
 MMSlider = ImgLoad("Map_Maker_Slider",2)
 MMSP = ImgLoad("MMSliderPart",2)

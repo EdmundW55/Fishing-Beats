@@ -29,7 +29,7 @@ px = 0
 def ImgLoad(image,num):
     image = image + ".png"
     if num == 1:#character
-        imgS = pygame.image.load(os.path.join('Assets', image)).convert_alpha()
+        imgS = pygame.image.load(os.path.join('../Assets', image)).convert_alpha()
         imgS = pygame.transform.scale(imgS, (width,height))
     return imgS
 
