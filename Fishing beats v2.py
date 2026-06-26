@@ -48,20 +48,20 @@ resizex, resizey = sx/1536, sy/864
 w = 0#mmmove * w = movement
 px = 0
 
-mapsList = os.listdir("../Maps")
+mapsList = os.listdir("Maps")
 
 def ImgLoad(image,num):
     image = image + ".png"
     if num == 1:#things
-        imgS = pygame.image.load(os.path.join('../Assets', image)).convert_alpha()
+        imgS = pygame.image.load(os.path.join('Assets', image)).convert_alpha()
         imgS = pygame.transform.scale(imgS, (180,75))
     elif num == 2:#stuff
-        imgS = pygame.image.load(os.path.join('../Assets', image)).convert_alpha()
+        imgS = pygame.image.load(os.path.join('Assets', image)).convert_alpha()
     elif num == 3:#map buttons
-        imgS = pygame.image.load(os.path.join('../Assets', image)).convert_alpha()
+        imgS = pygame.image.load(os.path.join('Assets', image)).convert_alpha()
         imgS = pygame.transform.scale(imgS, (600,75))
     elif num == 4:#50,50
-        imgS = pygame.image.load(os.path.join('../Assets', image)).convert_alpha()
+        imgS = pygame.image.load(os.path.join('Assets', image)).convert_alpha()
         imgS = pygame.transform.scale(imgS, (50,50))
     return imgS
 
@@ -2573,7 +2573,7 @@ def mapmenu():
     global mapmenuload
     if mapmenuload == False:
         mapmenulist = []
-        mapsList = os.listdir("../Maps")
+        mapsList = os.listdir("Maps")
         for folder in mapsList:
             content = os.listdir(f"Maps/{folder}")
             for maps in content:
@@ -2661,7 +2661,7 @@ def songselect():
     global mmsonglist
     global mmsongload
     mmsonglist = []
-    mapsList = os.listdir("../Maps")
+    mapsList = os.listdir("Maps")
     for folder in mapsList:
         content = os.listdir(f"Maps/{folder}")
         for songs in content:
@@ -3039,13 +3039,13 @@ def deserialize(data):
         # getting map when changed
         if len(room_info) == 1 and "map" in room_info:
             if not room_info["map"] == "":
-                if os.path.isdir(os.path.join("../Maps", room_info["map"][0])):
-                    mapFile = open(os.path.join("../Maps", room_info["map"][0], f"{room_info['map'][0][9:]}.txt"), "r")
+                if os.path.isdir(os.path.join("Maps", room_info["map"][0])):
+                    mapFile = open(os.path.join("Maps", room_info["map"][0], f"{room_info['map'][0][9:]}.txt"), "r")
                     content = mapFile.read()
                     if content == room_info["map"][1]:
                         playerGroup.setPlayerSlab(True, "map")
                         directoryStore = f"Maps/{room_info['map'][0]}"
-                        mixer.music.load(os.path.join("../Maps", room_info["map"][0], f"{room_info['map'][0][9:]}.mp3"))
+                        mixer.music.load(os.path.join("Maps", room_info["map"][0], f"{room_info['map'][0][9:]}.mp3"))
                         mixer.music.set_volume(0.5)
                         mixer.music.play(-1)
                         button_group.toggleDisable("readyUp", False)
@@ -3080,13 +3080,13 @@ def deserialize(data):
             readyUpButton = buttons("readyUp", sx - 200, sy - 75, 200, 75)
             button_group.add(readyUpButton)
             if not room_info["map"] == "":
-                if os.path.isdir(os.path.join("../Maps", room_info["map"][0])):
-                    mapFile = open(os.path.join("../Maps", room_info["map"][0], f"{room_info['map'][0][9:]}.txt"), "r")
+                if os.path.isdir(os.path.join("Maps", room_info["map"][0])):
+                    mapFile = open(os.path.join("Maps", room_info["map"][0], f"{room_info['map'][0][9:]}.txt"), "r")
                     content = mapFile.read()
                     if content == room_info["map"][1]:
                         playerGroup.setPlayerSlab(True, "map")
                         directoryStore = f"Maps/{room_info['map'][0]}"
-                        mixer.music.load(os.path.join("../Maps", room_info["map"][0], f"{room_info['map'][0][9:]}.mp3"))
+                        mixer.music.load(os.path.join("Maps", room_info["map"][0], f"{room_info['map'][0][9:]}.mp3"))
                         mixer.music.set_volume(0.5)
                         mixer.music.play(-1)
                         button_group.toggleDisable("readyUp", False)
@@ -3107,7 +3107,7 @@ def deserialize(data):
         elif len(room_info) == 3 and "song" in room_info:
             # make a folder with text file
             try:
-                folderPath = os.path.join("../Maps", room_info["name"])
+                folderPath = os.path.join("Maps", room_info["name"])
                 os.makedirs(folderPath)
 
                 song = open(os.path.join(folderPath, f"{room_info['name'][9:]}.mp3"), "wb")

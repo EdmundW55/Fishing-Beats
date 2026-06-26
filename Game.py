@@ -1,5 +1,6 @@
 import pygame
 import sys
+from Managers import ImageLoader
 
 class Game:
     def __init__(self, screen, clock):
@@ -7,6 +8,7 @@ class Game:
         self.clock = clock
         self.states = []
         self.screenWidth, self.screenHeight = pygame.display.get_window_size()
+        self.assets = ImageLoader.Assets()
 
     def push_state(self, state):
         self.states.append(state)
