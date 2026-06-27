@@ -3,7 +3,8 @@ import random
 from States.BaseState import state
 from Entities.Fish import *
 import pygame
-
+from pygame import mixer
+import os
 class FishingPole(pygame.sprite.Sprite):
     def __init__(self, lane, game):
         super().__init__()
@@ -32,7 +33,6 @@ class FishingPole(pygame.sprite.Sprite):
         self.rect.x,self.rect.y = [self.game.screenWidth - 400,((self.lane*50) + (self.lane-1)*70 + 400)]
 
     def click(self, fish):
-        result = 0
         if pygame.sprite.spritecollide(self, fish, False):
             fishlist = pygame.sprite.spritecollide(self, fish, False)
             for sprite in fishlist:
@@ -87,9 +87,7 @@ class Playing(state):
     def enter(self):
         FishingP = FishingPole(2, self.game)
         self.pole.add(FishingP)
-        for x in range(10):
-            fish1 = fish(0-(x*200), 1, random.randint(1,2), 3, self.game.screenWidth, self)
-            self.fishGroup.add(fish1)
+        self.mapPlay("Jamie Paige - BIRDBRAIN (Cover By Evil).mp3", "Maps/53508563-Jamie Paige - BIRDBRAIN (Cover By Evil)")
 
     def handle_events(self, events):
         for event in events:
@@ -145,5 +143,33 @@ class Playing(state):
         elif earlyLate == "L":
             self.lateNum += 1
 
-        print(self.score, earlyLate+result, self.combo, self.hitNum, self.earlyNum, self.lateNum)
+    def mapPlay(self, song, directory):
+        # e.g. Jamie Paige - BIRDBRAIN (Cover By Evil).mp3, Maps/53508563-Jamie Paige - BIRDBRAIN (Cover By Evil)
+        fishes = []
+        print(song, directory)
+        file = ""
+        split = song.split(".")
+        # finds the txt file for the level
+        if len(split) > 2:
+            for x in split:
+                if x != "mp3":
+                    file = file + x + "."
+            file = file + "txt"
+        else:
+            file = split[0] + ".txt"
+        # reads file and gets content
+        smp = open((os.path.join(directory, file)), "r")
+        content = smp.readlines()
+        # gets all the fish
+        for count in content:
+            entity = count.split()
+            fishes.append(entity)
+        for count in fishes:
+            if count[0] == "fish":
+                fishEntity = fish(int(count[1]), int(count[2]), int(count[3]), int(count[4]), self.game.screenWidth, self)  # (pos, lane, size, speed)
+                self.fishGroup.add(fishEntity)
+
+        mixer.music.load(os.path.join(directory, song))
+        mixer.music.set_volume(0.5)
+        mixer.music.play()
 

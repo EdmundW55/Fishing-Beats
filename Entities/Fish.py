@@ -31,7 +31,6 @@ class fish(pygame.sprite.Sprite):
     def disappear(self):
         result = None
         if self.rect.topright[0] >= self.sx - 325:
-            print("a")
             if self.rect.x == (self.sx - 400):
                 self.tap += 1
                 result = "APerfect"
@@ -49,7 +48,6 @@ class fish(pygame.sprite.Sprite):
                 result = "LEh"
 
         else:
-            print("buh")
             if self.rect.topright[0] <= (self.sx - 390):
                 self.tap += 1
                 result = "EBad"
