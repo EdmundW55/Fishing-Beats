@@ -20,7 +20,7 @@ class FishingPole(pygame.sprite.Sprite):
         self.disable2 = False
         self.buffer = 0
 
-    def movement(self, up):
+    def update(self, up):
         if up:
             if self.lane != 1:
                 self.lane -= 1
@@ -57,9 +57,9 @@ class FishPoleGroup(pygame.sprite.Group):  # make a group
     def __init__(self, *args):
         super().__init__(*args)
 
-    def movement(self, direction):
+    def update(self, direction):
         for sprite in self:
-            sprite.movement(direction)
+            sprite.update(direction)
 
     def click(self, fish):
         for sprite in self:
@@ -98,9 +98,9 @@ class Playing(state):
                     self.pole.click(self.fishGroup)
 
                 if event.key == pygame.K_o:
-                    self.pole.movement(True)
+                    self.pole.update(True)
                 if event.key == pygame.K_p:
-                    self.pole.movement(False)
+                    self.pole.update(False)
 
     def update(self, dt):
         self.fishGroup.update()
