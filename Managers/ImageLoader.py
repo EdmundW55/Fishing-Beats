@@ -15,6 +15,7 @@ def ImgLoad(image,num):
         imgS = pygame.image.load(os.path.join('Assets', image)).convert_alpha()
         imgS = pygame.transform.scale(imgS, (50,50))
     return imgS
+
 # stores all assets
 class Assets():
     def __init__(self):

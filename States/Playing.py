@@ -1,5 +1,4 @@
 import random
-
 from States.BaseState import state
 from Entities.Fish import *
 import pygame
@@ -89,6 +88,10 @@ class Playing(state):
         self.pole.add(FishingP)
         self.mapPlay("Jamie Paige - BIRDBRAIN (Cover By Evil).mp3", "Maps/53508563-Jamie Paige - BIRDBRAIN (Cover By Evil)")
 
+    def exit(self):
+        # go to score screen
+        pass
+
     def handle_events(self, events):
         for event in events:
             if event.type == pygame.KEYDOWN:
@@ -97,9 +100,9 @@ class Playing(state):
                 if event.key == pygame.K_w:
                     self.pole.click(self.fishGroup)
 
-                if event.key == pygame.K_o:
+                if event.key == pygame.K_UP:
                     self.pole.update(True)
-                if event.key == pygame.K_p:
+                if event.key == pygame.K_DOWN:
                     self.pole.update(False)
 
     def update(self, dt):
@@ -107,6 +110,11 @@ class Playing(state):
 
     def draw(self, screen):
         screen.fill((0,0,0))
+        scoreDis = self.game.text.font.render(str(self.score), True, (255, 255, 255))
+        comboDis = self.game.text.font.render("x" + str(self.combo), True, (255, 255, 255))
+
+        screen.blit(scoreDis, (0, 0))
+        screen.blit(comboDis, (0, 100))
         self.fishGroup.draw(screen)
         self.pole.draw(screen)
 
