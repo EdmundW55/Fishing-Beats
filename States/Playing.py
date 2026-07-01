@@ -1,9 +1,13 @@
 import random
+
+from Game import Game
 from States.BaseState import state
 from Entities.Fish import *
+from Entities.Button import *
 import pygame
 from pygame import mixer
 import os
+
 class FishingPole(pygame.sprite.Sprite):
     def __init__(self, lane, game):
         super().__init__()
@@ -82,17 +86,26 @@ class Playing(state):
 
         self.pole = FishPoleGroup()
         self.fishGroup = fishG()
+        self.buttonGroup = buttonG()
 
     def enter(self):
         FishingP = FishingPole(2, self.game)
+        exitmap = button(self.game, self.quit, 200, 200)
+        self.buttonGroup.add(exitmap)
+
         self.pole.add(FishingP)
         self.mapPlay("Jamie Paige - BIRDBRAIN (Cover By Evil).mp3", "Maps/53508563-Jamie Paige - BIRDBRAIN (Cover By Evil)")
 
+    def quit(self):
+        self.game.pop_state()
+
     def exit(self):
-        # go to score screen
-        pass
+        print(self.game.states)
+
+
 
     def handle_events(self, events):
+        self.buttonGroup.handle_event(events, self.buttonGroup)
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_q:
@@ -117,6 +130,7 @@ class Playing(state):
         screen.blit(comboDis, (0, 100))
         self.fishGroup.draw(screen)
         self.pole.draw(screen)
+        self.buttonGroup.draw(screen)
 
 
     def getScore(self, result):

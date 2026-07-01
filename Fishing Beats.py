@@ -1,7 +1,7 @@
 import pygame
 import os
 from Game import Game
-from States.Playing import Playing
+from States.MainMenu import MainMenu
 
 def main():
     pygame.init()
@@ -18,7 +18,7 @@ def main():
     clock = pygame.time.Clock()
 
     game = Game(screen, clock)
-    game.push_state(Playing(game))
+    game.push_state(MainMenu(game))
 
     game.run()
 
