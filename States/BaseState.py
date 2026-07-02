@@ -14,6 +14,9 @@ class state():
         """
         pass
 
+    def back(self):
+        self.game.pop_state()
+
     def handle_events(self, events):
         """
         Key presses in this state

@@ -3,16 +3,26 @@ from sympy import false
 
 
 class button(pygame.sprite.Sprite):
-    def __init__(self, game, action, x, y, scroll = False):
+    def __init__(self, game, action, x, y, scroll = False, image = None, directory = None):
         super().__init__()
         self.game = game
-        self.image = pygame.Surface([75, 75])
-        self.image.fill((255, 255, 255))
+        if image is not None:
+            # make all images independent
+            self.image = image.copy()
+        else:
+            self.image = pygame.Surface([75, 75])
+            self.image.fill((255, 255, 255))
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = [x, y]
         self.originalY = self.rect.y
         self.action = action
         self.scrollToggle = scroll
+        self.directory = directory
+        if self.directory is not None:
+            song = self.directory.split("-", 1)[1]
+            self.text = self.game.text.smallFont.render(song, True, (255, 255, 255))
+            w, h = self.game.text.smallFont.size(song)
+            self.image.blit(self.text, (10, (self.rect.height-h)/2))
 
     def handle_event(self, events, group):
         # if press mouse down
@@ -23,8 +33,10 @@ class button(pygame.sprite.Sprite):
                 # if click button
                 if pygame.mouse.get_pressed()[0]:
                     if self.rect.collidepoint(event.pos):
-                        # run function
-                        self.action()
+                        if self.directory is not None:
+                            self.action(self.directory)
+                        else:
+                            self.action()
             elif event.type == pygame.MOUSEWHEEL and self.scrollToggle:
                 if pygame.mouse.get_pos()[0] > pygame.display.get_window_size()[0]/2:
                     # scroll up and down

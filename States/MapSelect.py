@@ -1,27 +1,33 @@
-from Game import Game
 from States.BaseState import state
 from Entities.Button import *
-import pygame
 from States.Playing import Playing
+import os
+from pygame import mixer
 
 class MapSelect(state):
     def __init__(self, game):
         super().__init__(game)
         self.buttonGroup = buttonG()
 
+
     def enter(self):
-        play = button(self.game, self.play_map, 0, 0, True)
-        play2 = button(self.game, self.play_map, 0, 50, True)
-        back = button(self.game, self.back, 0, self.game.screenHeight-50, True)
-        self.buttonGroup.add(play)
-        self.buttonGroup.add(play2)
+        box = self.game.assets.box
+        selectedBox = self.game.assets.box2
+        mapsList = os.listdir("Maps")
+        for folder in mapsList:
+            # only show songs with a map
+            song = folder.split("-", 1)[1]
+            path = "Maps/"+folder+"/"+song+".txt"
+            if os.path.isfile(path):
+                mapButton = button(self.game, self.play_map, self.game.screenWidth-self.game.assets.size(box)[0], len(self.buttonGroup)*75,
+                                   True, box, folder)
+                self.buttonGroup.add(mapButton)
+
+        back = button(self.game, self.back, 0, self.game.screenHeight-75, False)
         self.buttonGroup.add(back)
 
     def exit(self):
         pass
-
-    def back(self):
-        self.game.pop_state()
 
     def handle_events(self, events):
         self.buttonGroup.handle_event(events, self.buttonGroup)
@@ -34,8 +40,17 @@ class MapSelect(state):
 
         self.buttonGroup.draw(screen)
 
-    def play_map(self):
-        self.game.push_state(Playing(self.game))
+    def play_map(self, directory):
+        song = directory.split("-", 1)[1]
+        self.game.push_state(Playing(self.game, song, directory))
 
     def scroll_maps(self, amount):
         self.buttonGroup.scroll(amount)
+
+    def play_song(self, entity):
+        song = entity.directory.split("-", 1)[1]
+        self.buttonGroup.reset(entity)
+        print(song, entity.directory)
+        mixer.music.load(os.path.join("Maps/"+entity.directory, song+".mp3"))
+        mixer.music.set_volume(0.5)
+        mixer.music.play()

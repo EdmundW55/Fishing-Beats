@@ -19,6 +19,11 @@ class Game:
         state = self.states.pop()
         state.exit()
 
+    def updateScreen(self):
+        self.states[-1].draw(self.screen)
+
+        pygame.display.flip()
+
     def run(self):
         running = True
         while running:

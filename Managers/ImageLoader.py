@@ -21,3 +21,8 @@ class Assets():
     def __init__(self):
         self.fish = ImgLoad("fish", 1)
         self.fish2 = ImgLoad("fish2", 1)
+        self.box = ImgLoad("box", 1)
+        self.box2 = ImgLoad("box2", 1)
+
+    def size(self, image):
+        return image.get_size()

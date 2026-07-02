@@ -2,3 +2,4 @@ import pygame
 class TextManager():
     def __init__(self):
         self.font = pygame.font.SysFont("gadugi", 50)
+        self.smallFont = pygame.font.SysFont("gadugi", 25)

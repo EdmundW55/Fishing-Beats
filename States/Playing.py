@@ -1,5 +1,3 @@
-import random
-
 from Game import Game
 from States.BaseState import state
 from Entities.Fish import *
@@ -7,6 +5,9 @@ from Entities.Button import *
 import pygame
 from pygame import mixer
 import os
+
+from States.ScoreScreen import ScoreScreen
+
 
 class FishingPole(pygame.sprite.Sprite):
     def __init__(self, lane, game):
@@ -73,7 +74,7 @@ class FishPoleGroup(pygame.sprite.Group):  # make a group
             sprite.reset()
 
 class Playing(state):
-    def __init__(self, game):
+    def __init__(self, game, song, directory):
         super().__init__(game)
         self.score = 0
         self.combo = 0
@@ -83,10 +84,14 @@ class Playing(state):
         self.earlyNum = 0
         self.lateNum = 0
         self.missNum = 0
+        self.maxCombo = 0
 
         self.pole = FishPoleGroup()
         self.fishGroup = fishG()
         self.buttonGroup = buttonG()
+
+        self.directory = directory
+        self.song = song
 
     def enter(self):
         FishingP = FishingPole(2, self.game)
@@ -94,14 +99,17 @@ class Playing(state):
         self.buttonGroup.add(exitmap)
 
         self.pole.add(FishingP)
-        self.mapPlay("Jamie Paige - BIRDBRAIN (Cover By Evil).mp3", "Maps/53508563-Jamie Paige - BIRDBRAIN (Cover By Evil)")
+        self.mapPlay(self.song + ".mp3", "Maps/"+self.directory)
 
     def quit(self):
         self.game.pop_state()
 
     def exit(self):
-        print(self.game.states)
-
+        if len(self.fishGroup) <= 0:
+            scores = [self.score, self.hitNum, self.earlyNum, self.lateNum, self.missNum, self.maxCombo, self.accuracy]
+            self.game.push_state(ScoreScreen(self.game, scores))
+        else:
+            mixer.music.unload()
 
 
     def handle_events(self, events):
@@ -120,9 +128,14 @@ class Playing(state):
 
     def update(self, dt):
         self.fishGroup.update()
+        if len(self.fishGroup) <= 0:
+            self.game.updateScreen()
+            pygame.mixer.music.fadeout(2500)
+            mixer.music.unload()
+            self.quit()
 
     def draw(self, screen):
-        screen.fill((0,0,0))
+        screen.fill((0, 0, 0))
         scoreDis = self.game.text.font.render(str(self.score), True, (255, 255, 255))
         comboDis = self.game.text.font.render("x" + str(self.combo), True, (255, 255, 255))
 
@@ -131,7 +144,6 @@ class Playing(state):
         self.fishGroup.draw(screen)
         self.pole.draw(screen)
         self.buttonGroup.draw(screen)
-
 
     def getScore(self, result):
         earlyLate = result[0]
@@ -155,8 +167,11 @@ class Playing(state):
             self.score += 25 * self.combo
 
         elif result == "Bad":
+            self.maxCombo = self.combo
             self.combo = 0
+
         elif result == "Miss":
+            self.maxCombo = self.combo
             self.combo = 0
             self.missNum += 1
 
@@ -180,6 +195,7 @@ class Playing(state):
         else:
             file = split[0] + ".txt"
         # reads file and gets content
+        print(directory, file)
         smp = open((os.path.join(directory, file)), "r")
         content = smp.readlines()
         # gets all the fish
