@@ -34,7 +34,7 @@ class button(pygame.sprite.Sprite):
                 if pygame.mouse.get_pressed()[0]:
                     if self.rect.collidepoint(event.pos):
                         if self.directory is not None:
-                            self.action(self.directory)
+                            self.action(self.directory, self)
                         else:
                             self.action()
             elif event.type == pygame.MOUSEWHEEL and self.scrollToggle:
@@ -62,15 +62,24 @@ class buttonG(pygame.sprite.Group):#make a group
     def __init__(self, *args):
         super().__init__(*args)
         self.scrolling = False
+        self.lastSprite = None
 
     def handle_event(self, event, group):
         for sprite in self:
             sprite.handle_event(event, group)
 
     def scroll(self, amount):
-        last_sprite = self.sprites()[-1]
+
+
         for sprite in self:
-            if last_sprite.rect.y + amount*20 > 0:
+            if self.lastSprite.rect.y + amount*20 > 0:
                 sprite.scroll(amount)
-            elif last_sprite.rect.y + amount*20 < 0 and last_sprite.rect.y != 0:
-                sprite.scroll(last_sprite.rect.y, True)
+            elif self.lastSprite.rect.y + amount*20 < 0 and self.lastSprite.rect.y != 0:
+                sprite.scroll(self.lastSprite.rect.y, True)
+
+    def lastSpriteCheck(self):
+        self.lastSprite = self.sprites()[-1]
+        for sprite in reversed(self.sprites()):
+            if sprite.scrollToggle:
+                self.lastSprite = sprite
+                break
