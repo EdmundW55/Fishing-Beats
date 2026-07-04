@@ -10,6 +10,7 @@ class Game:
         self.screenWidth, self.screenHeight = pygame.display.get_window_size()
         self.assets = ImageLoader.Assets()
         self.text = TextManager.TextManager()
+        self.running = True
 
     def push_state(self, state):
         self.states.append(state)
@@ -25,16 +26,18 @@ class Game:
         pygame.display.flip()
 
     def run(self):
-        running = True
-        while running:
+        while self.running:
             events = pygame.event.get()
             for event in events:
                 if event.type == pygame.QUIT:
-                    running = False
+                    self.running = False
             dt = self.clock.tick(60) / 1000
-            self.states[-1].handle_events(events)
-            self.states[-1].update(dt)
-            self.states[-1].draw(self.screen)
+            try:
+                self.states[-1].handle_events(events)
+                self.states[-1].update(dt)
+                self.states[-1].draw(self.screen)
+            except IndexError as e:
+                self.running = False
 
             pygame.display.flip()
 

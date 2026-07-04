@@ -9,7 +9,7 @@ class ScoreScreen(state):
         self.scores = scores
 
     def enter(self):
-        back = button(self.game, self.back, 0, self.game.screenHeight - 75, False)
+        back = button(self.game, self.back, 0, self.game.screenHeight - 75, False, self.game.assets.backButton)
         self.buttonGroup.add(back)
 
     def exit(self):

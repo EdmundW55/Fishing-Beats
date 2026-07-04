@@ -16,7 +16,7 @@ class MapSelect(state):
 
     def enter(self):
         box = self.game.assets.box
-        selectedBox = self.game.assets.box2
+        selectedBox = self.game.assets.boxSelected
         mapsList = os.listdir("Maps")
         for folder in mapsList:
             # only show songs with a map
@@ -24,10 +24,10 @@ class MapSelect(state):
             path = "Maps/"+folder+"/"+song+".txt"
             if os.path.isfile(path):
                 mapButton = button(self.game, self.play_map, self.game.screenWidth-self.game.assets.size(box)[0], len(self.buttonGroup)*75,
-                                   True, box, folder)
+                                   True, box, folder, selectedBox)
                 self.buttonGroup.add(mapButton)
         self.buttonGroup.lastSpriteCheck()
-        back = button(self.game, self.back, 0, self.game.screenHeight-75, False)
+        back = button(self.game, self.back, 0, self.game.screenHeight-75, False, self.game.assets.backButton)
         self.buttonGroup.add(back)
 
     def exit(self):
@@ -76,7 +76,7 @@ class MapSelect(state):
         song = entity.directory.split("-", 1)[1]
         directory = "Maps/"+entity.directory
         self.songStore = [directory, song]
-
+        self.buttonGroup.swap_image(entity)
         openMap = open((os.path.join(directory, (song + ".txt"))), "r")
         lines = openMap.read().splitlines()
         if lines != []:

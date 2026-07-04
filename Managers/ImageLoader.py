@@ -19,9 +19,15 @@ def ImgLoad(image,num):
 # stores all assets
 class Assets():
     def __init__(self):
+        self.playButton = ImgLoad("Play_button", 1)
+        self.mapMaker = ImgLoad("mapmakebutton", 1)
+        self.settingsButton = ImgLoad("SettingsButton", 1)
+        self.exitButton = ImgLoad("Menu_Exit", 1)
+        self.backButton = ImgLoad("Backbutton", 1)
         self.fish = ImgLoad("fish", 1)
         self.fish2 = ImgLoad("fish2", 1)
         self.box = ImgLoad("box", 1)
+        self.boxSelected = ImgLoad("box_selected", 1)
         self.box2 = ImgLoad("box2", 1)
 
     def size(self, image):
