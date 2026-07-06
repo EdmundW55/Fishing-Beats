@@ -1,6 +1,7 @@
 import pygame
 import sys
-from Managers import ImageLoader, TextManager
+from Managers import ImageLoader, TextManager, NetworkManager
+
 
 class Game:
     def __init__(self, screen, clock):
@@ -10,6 +11,7 @@ class Game:
         self.screenWidth, self.screenHeight = pygame.display.get_window_size()
         self.assets = ImageLoader.Assets()
         self.text = TextManager.TextManager()
+        self.network = NetworkManager.NetworkManager()
         self.running = True
 
     def push_state(self, state):
@@ -40,7 +42,6 @@ class Game:
                 self.running = False
 
             pygame.display.flip()
-
         pygame.quit()
         sys.exit()
 

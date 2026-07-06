@@ -23,8 +23,8 @@ class MapSelect(state):
             song = folder.split("-", 1)[1]
             path = "Maps/"+folder+"/"+song+".txt"
             if os.path.isfile(path):
-                mapButton = button(self.game, self.play_map, self.game.screenWidth-self.game.assets.size(box)[0], len(self.buttonGroup)*75,
-                                   True, box, folder, selectedBox)
+                mapButton = button(self.game, self.play_map, self.game.screenWidth-self.game.assets.size(box)[0], 100 +
+                                   len(self.buttonGroup)*75, True, box, folder, selectedBox)
                 self.buttonGroup.add(mapButton)
         self.buttonGroup.lastSpriteCheck()
         back = button(self.game, self.back, 0, self.game.screenHeight-75, False, self.game.assets.backButton)
