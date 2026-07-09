@@ -19,7 +19,10 @@ def main():
 
     game = Game(screen, clock)
     game.push_state(MainMenu(game))
-
+    try:
+        game.network.connect_online()
+    except:
+        pass
     game.run()
 
 

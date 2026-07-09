@@ -47,5 +47,6 @@ class OnlineStart(state):
         screen.blit(nameDis, (0, 100))
 
     def connect(self):
-        self.game.network.connect_online()
+        # go to room select
+        self.game.network.send_data(1)
 
