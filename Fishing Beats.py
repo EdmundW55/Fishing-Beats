@@ -21,7 +21,7 @@ def main():
     game.push_state(MainMenu(game))
     try:
         game.network.connect_online()
-    except:
+    except Exception as e:
         pass
     game.run()
 
