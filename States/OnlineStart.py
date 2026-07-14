@@ -3,6 +3,9 @@ from Game import Game
 from States.BaseState import state
 import pygame
 
+from States.RoomSelect import RoomSelect
+
+
 class OnlineStart(state):
     def __init__(self, game):
         super().__init__(game)
@@ -48,5 +51,6 @@ class OnlineStart(state):
 
     def connect(self):
         # go to room select
-        self.game.network.send_data(1)
+        self.game.push_state(RoomSelect(self.game))
+
 

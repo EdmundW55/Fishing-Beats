@@ -31,5 +31,6 @@ class Assets():
         self.boxSelected = ImgLoad("box_selected", 1)
         self.box2 = ImgLoad("box2", 1)
 
+    # get size of assets
     def size(self, image):
         return image.get_size()

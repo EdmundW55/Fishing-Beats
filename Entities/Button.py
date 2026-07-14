@@ -3,7 +3,7 @@ from sympy import false
 
 
 class button(pygame.sprite.Sprite):
-    def __init__(self, game, action, x, y, scroll = False, image = None, directory = None, secondImage = None):
+    def __init__(self, game, action, x, y, scroll = False, image = None, directory = None, secondImage = None, text = None):
         super().__init__()
         self.game = game
         if image is not None:
@@ -26,13 +26,15 @@ class button(pygame.sprite.Sprite):
         self.scrollToggle = scroll
         self.directory = directory
 
-
-
         if self.directory is not None:
             song = self.directory.split("-", 1)[1]
             self.text = self.game.text.smallFont.render(song, True, (255, 255, 255))
             w, h = self.game.text.smallFont.size(song)
             self.image.blit(self.text, (10, (self.rect.height-h)/2))
+        elif text is not None:
+            self.text = self.game.text.smallFont.render(text, True, (255, 255, 255))
+            w, h = self.game.text.smallFont.size(text)
+            self.image.blit(self.text, (10, (self.rect.height - h) / 2))
 
     def handle_event(self, events, group):
         # if press mouse down

@@ -4,7 +4,7 @@ import time
 import threading
 
 class NetworkManager:
-    def __init__(self, host="127.0.0.1", port=62743):
+    def __init__(self, game, host="127.0.0.1", port=62743):
         self.connected = False
         self.host = host
         self.port = port
@@ -13,13 +13,14 @@ class NetworkManager:
         # (unsigned) char + integer
         self.headerFormat = b'BI'
         self.headerSize = struct.calcsize(self.headerFormat)
+        self.game = game
 
     def send_data(self, data):
         if self.socket:
             self.socket.sendall(struct.pack("b", data))
 
     def deserialize(self, operation, data):
-        print(operation, data)
+        self.game.states[-1].online(operation, data)
 
     # receive exact data needed based on size of packets
     def recv_exact(self, size):

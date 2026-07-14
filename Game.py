@@ -11,7 +11,7 @@ class Game:
         self.screenWidth, self.screenHeight = pygame.display.get_window_size()
         self.assets = ImageLoader.Assets()
         self.text = TextManager.TextManager()
-        self.network = NetworkManager.NetworkManager()
+        self.network = NetworkManager.NetworkManager(self)
         self.running = True
 
     def push_state(self, state):
