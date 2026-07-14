@@ -1,0 +1,127 @@
+normal, duck, sprite chest
+gold, earth, chest
+normal, ghost, sprite chest
+normal, ghost, wandering
+normal, punk, rare chest
+nothing, nothing, chest
+nothing, nothing, chest
+nothing, nothing, chest
+holofoil, fire, sprite chest
+nothing, nothing, chest
+gold, water, chest
+holofoil, fire, rare chest
+normal, duck, rare chest
+normal, duck, sprite chest
+normal, duck, sprite chest
+gold, duck, elim
+nothing, nothing, chest
+normal, earth, wandering
+nothing, nothing, chest
+nothing, nothing, chest
+nothing, nothing, chest
+normal, duck, wandering
+nothing, nothing, chest
+gold, earth, sprite chest
+normal, fire, wandering
+nothing, nothing, chest
+normal, demon, rare chest
+gold, fishstick, chest
+normal, fire, wandering
+normal, duck, rare chest
+nothing, nothing, rare chest
+nothing, nothing, chest
+nothing, nothing, chest
+nothing, nothing, rare chest
+nothing, nothing, rare chest
+normal, dream, chest
+nothing, nothing, chest
+nothing, nothing, chest
+nothing, nothing, chest
+nothing, nothing, chest
+normal, ghost, sprite chest
+nothing, nothing, chest
+gummy, fishstick, chest
+normal, water, sprite chest
+nothing, nothing, chest
+normal, ghost, chest
+nothing, nothing, chest
+nothing, nothing, chest
+nothing, nothing, chest
+nothing, nothing, chest
+nothing, nothing, chest
+normal, boss, rare chest
+nothing, nothing, chest
+normal, ghost, sprite chest
+nothing, nothing, chest
+nothing, nothing, chest
+nothing, nothing, chest
+nothing, nothing, chest
+nothing, nothing, rare chest
+nothing, nothing, chest
+nothing, nothing, chest
+normal, duck, sprite chest
+nothing, nothing, chest
+normal, duck, rare chest
+gummy, king, elim
+nothing, nothing, rare chest
+nothing, nothing, chest
+nothing, nothing, chest
+nothing, nothing, rare chest
+normal, water, sprite chest
+normal, dream, rare chest
+normal, duck, chest
+nothing, nothing, chest
+nothing, nothing, chest
+nothing, nothing, chest
+nothing, nothing, chest
+nothing, nothing, chest
+nothing, nothing, rare chest
+nothing, nothing, chest
+normal, duck, chest
+nothing, nothing, chest
+galaxy, earth, wandering
+normal, king, elim
+normal, duck, chest
+nothing, nothing, chest
+nothing, nothing, chest
+normal, earth, sprite chest
+nothing, nothing, rare chest
+normal, demon, chest
+nothing, nothing, chest
+normal, earth, elim
+normal, football, rare chest
+nothing, nothing, chest
+normal, water, rare chest
+nothing, nothing, chest
+normal, water, rare chest
+nothing, nothing, rare chest
+nothing, nothing, chest
+nothing, nothing, chest
+holofoil, king, elim
+normal, ghost, elim
+normal, water, elim
+nothing, nothing, rare chest
+nothing, nothing, chest
+nothing, nothing, chest
+normal, ghost, chest
+nothing, nothing, chest
+nothing, nothing, chest
+normal, aura, chest
+gold, fire, rare chest
+normal, dream, sprite chest
+nothing, nothing, chest
+nothing, nothing, chest
+normal, demon, sprite chest
+normal, fishstick, sprite chest
+nothing, nothing, rare chest
+nothing, nothing, rare chest
+nothing, nothing, chest
+nothing, nothing, chest
+nothing, nothing, chest
+normal, ghost, sprite chest
+normal, water, rare chest
+normal, earth, sprite chest
+nothing, nothing, chest
+nothing, nothing, chest
+normal, aura, elim
+normal, boss, elim
