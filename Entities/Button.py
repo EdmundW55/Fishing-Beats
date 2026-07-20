@@ -36,6 +36,8 @@ class button(pygame.sprite.Sprite):
             w, h = self.game.text.smallFont.size(text)
             self.image.blit(self.text, (10, (self.rect.height - h) / 2))
 
+        self.textStore = text
+
     def handle_event(self, events, group):
         # if press mouse down
         for event in events:
