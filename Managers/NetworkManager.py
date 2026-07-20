@@ -15,9 +15,12 @@ class NetworkManager:
         self.headerSize = struct.calcsize(self.headerFormat)
         self.game = game
 
-    def send_data(self, data):
+    def send_data(self, data, addedData = None):
         if self.socket:
-            self.socket.sendall(struct.pack("b", data))
+            if addedData is None:
+                self.socket.sendall(struct.pack("b", data))
+            else:
+                self.socket.sendall(struct.pack(addedData,data[0], data[1:]))
 
     def deserialize(self, operation, data):
         self.game.states[-1].online(operation, data)
