@@ -2,3 +2,4 @@ __pycache__/
 *.py[cod]
 .idea/
 Maps/**/*.mp3
+server.py
