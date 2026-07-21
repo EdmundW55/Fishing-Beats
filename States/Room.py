@@ -27,13 +27,11 @@ class Room(state):
         self.buttonGroup.draw(screen)
 
     def online(self, operation, data):
-        if operation == 1:
+        if operation == 4:
             decoded = data.decode()
             room_info = json.loads(decoded)
-            rooms = room_info["rooms"]
-            for count, room in enumerate(rooms):
-                roomButton = button(self.game, self.back, 0, 10 + 100 * count, False, text = room["code"])
-                self.buttonGroup.add(roomButton)
+            roomData = room_info["room"]
+            print(roomData)
 
 
 

@@ -1,6 +1,6 @@
 from Entities.Button import *
 from States.BaseState import state
-import pygame
+
 class MapMaker(state):
     def __init__(self, game):
         super().__init__(game)

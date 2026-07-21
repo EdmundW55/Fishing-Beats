@@ -1,5 +1,6 @@
 from Entities.Button import *
 from States.BaseState import state
+from States.Room import Room
 import pygame
 import json
 
@@ -33,8 +34,20 @@ class RoomSelect(state):
             room_info = json.loads(decoded)
             rooms = room_info["rooms"]
             for count, room in enumerate(rooms):
-                roomButton = button(self.game, self.back, 0, 10 + 100 * count, False, text = room["code"])
+                roomButton = button(self.game, self.join_room, 0, 10 + 100 * count, False, text = room["code"],
+                                    extraData=room["code"], textColour=(0, 0, 0))
                 self.buttonGroup.add(roomButton)
+        elif operation == 3:
+            decoded = self.game.network.decode_data("B", data)[0]
+            if not decoded:
+                self.game.push_state(Room(self.game))
+
+    def join_room(self, room):
+        dataFormat = f'!BI{len(room)}s'
+        self.game.network.send_data(3, len(room), room.encode("utf-8"), addedData=dataFormat)
+
+
+
 
 
 

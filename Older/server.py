@@ -13,7 +13,7 @@ def send_message(conn, data_bytes):
         print(f"Failed to send to {conn}, connection probably closed.")
 
 class Server:
-    def __init__(self, host='0.0.0.0', port=62087):
+    def __init__(self, host='127.0.0.1', port=62087):
         self.host = host
         self.port = port
 

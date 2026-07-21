@@ -3,7 +3,8 @@ from sympy import false
 
 
 class button(pygame.sprite.Sprite):
-    def __init__(self, game, action, x, y, scroll = False, image = None, directory = None, secondImage = None, text = None):
+    def __init__(self, game, action, x, y, scroll = False, image = None, directory = None, secondImage = None,
+                 text = None, extraData = None, textColour = (255, 255, 255)):
         super().__init__()
         self.game = game
         if image is not None:
@@ -25,14 +26,15 @@ class button(pygame.sprite.Sprite):
         self.action = action
         self.scrollToggle = scroll
         self.directory = directory
+        self.extraData = extraData
 
         if self.directory is not None:
             song = self.directory.split("-", 1)[1]
-            self.text = self.game.text.smallFont.render(song, True, (255, 255, 255))
+            self.text = self.game.text.smallFont.render(song, True, textColour)
             w, h = self.game.text.smallFont.size(song)
             self.image.blit(self.text, (10, (self.rect.height-h)/2))
         elif text is not None:
-            self.text = self.game.text.smallFont.render(text, True, (255, 255, 255))
+            self.text = self.game.text.smallFont.render(text, True, textColour)
             w, h = self.game.text.smallFont.size(text)
             self.image.blit(self.text, (10, (self.rect.height - h) / 2))
 
@@ -49,6 +51,8 @@ class button(pygame.sprite.Sprite):
                     if self.rect.collidepoint(event.pos):
                         if self.directory is not None:
                             self.action(self.directory, self)
+                        elif self.extraData is not None:
+                            self.action(self.extraData)
                         else:
                             self.action()
             elif event.type == pygame.MOUSEWHEEL and self.scrollToggle:

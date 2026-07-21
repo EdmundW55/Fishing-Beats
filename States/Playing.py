@@ -1,4 +1,3 @@
-from Game import Game
 from States.BaseState import state
 from Entities.Fish import *
 from Entities.Button import *
