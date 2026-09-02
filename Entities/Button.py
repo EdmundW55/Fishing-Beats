@@ -1,10 +1,9 @@
 import pygame
-from sympy import false
 
 
 class button(pygame.sprite.Sprite):
     def __init__(self, game, action, x, y, scroll = False, image = None, directory = None, secondImage = None,
-                 text = None, extraData = None, textColour = (255, 255, 255)):
+                 text = None, extraData = None, textColour = (255, 255, 255), disable = False):
         super().__init__()
         self.game = game
         if image is not None:
@@ -27,6 +26,8 @@ class button(pygame.sprite.Sprite):
         self.scrollToggle = scroll
         self.directory = directory
         self.extraData = extraData
+        self.clickDisable = disable
+        self.enabled = True
 
         if self.directory is not None:
             song = self.directory.split("-", 1)[1]
@@ -48,20 +49,22 @@ class button(pygame.sprite.Sprite):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 # if click button
                 if pygame.mouse.get_pressed()[0]:
-                    if self.rect.collidepoint(event.pos):
+                    if self.rect.collidepoint(event.pos) and self.enabled:
+                        if self.clickDisable:
+                            self.enabled = False
+
                         if self.directory is not None:
                             self.action(self.directory, self)
                         elif self.extraData is not None:
                             self.action(self.extraData)
                         else:
                             self.action()
+
             elif event.type == pygame.MOUSEWHEEL and self.scrollToggle:
                 if pygame.mouse.get_pos()[0] > pygame.display.get_window_size()[0]/2:
                     # scroll up and down
                     group.scrolling = True
                     group.scroll(event.y)
-
-
 
 
     def scroll(self, amount, top = False):
@@ -83,6 +86,8 @@ class button(pygame.sprite.Sprite):
             w, h = self.game.text.smallFont.size(song)
             self.image.blit(self.text, (10, (self.rect.height-h)/2))
 
+    def enable_toggle(self, action):
+        self.enabled = action
 
 class buttonG(pygame.sprite.Group):#make a group
     def __init__(self, *args):

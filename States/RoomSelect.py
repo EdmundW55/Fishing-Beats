@@ -1,3 +1,5 @@
+from shapely.speedups import enabled
+
 from Entities.Button import *
 from States.BaseState import state
 from States.Room import Room
@@ -13,6 +15,10 @@ class RoomSelect(state):
     def enter(self):
         back = button(self.game, self.back, 0, self.game.screenHeight - 75, False, self.game.assets.backButton)
         self.buttonGroup.add(back)
+        buttonWidth, _ = self.game.assets.size(self.game.assets.createButton)
+        create = button(self.game, self.create_room, self.game.screenWidth - buttonWidth, self.game.screenHeight - 75, False,
+                        self.game.assets.createButton, disable=True)
+        self.buttonGroup.add(create)
         self.game.network.send_data(1)
 
     def exit(self):
@@ -37,14 +43,22 @@ class RoomSelect(state):
                 roomButton = button(self.game, self.join_room, 0, 10 + 100 * count, False, text = room["code"],
                                     extraData=room["code"], textColour=(0, 0, 0))
                 self.buttonGroup.add(roomButton)
+        elif operation == 2:
+            decoded = data.decode()
+            room_info = json.loads(decoded)
+            print(room_info)
+            self.game.push_state(Room(self.game))
         elif operation == 3:
             decoded = self.game.network.decode_data("B", data)[0]
             if not decoded:
                 self.game.push_state(Room(self.game))
 
+
     def join_room(self, room):
-        dataFormat = f'!BI{len(room)}s'
-        self.game.network.send_data(3, len(room), room.encode("utf-8"), addedData=dataFormat)
+        self.game.network.send_data(3, room.encode("utf-8"))
+
+    def create_room(self):
+        self.game.network.send_data(2)
 
 
 

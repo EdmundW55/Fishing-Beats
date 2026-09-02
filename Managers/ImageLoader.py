@@ -25,11 +25,13 @@ class Assets():
         self.exitButton = ImgLoad("Menu_Exit", 1)
         self.backButton = ImgLoad("Backbutton", 1)
         self.enterButton = ImgLoad("EnterButton", 1)
+        self.createButton = ImgLoad("CreateRoomButton", 1)
         self.fish = ImgLoad("fish", 1)
         self.fish2 = ImgLoad("fish2", 1)
         self.box = ImgLoad("box", 1)
         self.boxSelected = ImgLoad("box_selected", 1)
         self.box2 = ImgLoad("box2", 1)
+
 
     # get size of assets
     def size(self, image):

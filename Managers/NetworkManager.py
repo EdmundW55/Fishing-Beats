@@ -11,22 +11,20 @@ class NetworkManager:
         self.socket = None
         self.kill = False
         # (unsigned) char + integer
-        self.headerFormat = b'BI'
+        self.headerFormat = b'!BI'
         self.headerSize = struct.calcsize(self.headerFormat)
         self.game = game
 
-    def send_data(self, *data, addedData = None):
-        if self.socket:
-            if addedData is None:
-                self.socket.sendall(struct.pack("b", data[0]))
-            else:
-                self.socket.sendall(struct.pack(addedData, *data))
+    def send_data(self, operation, message=b""):
+        packet = struct.pack("!BI", operation, len(message)) + message
+        self.socket.sendall(packet)
 
     def decode_data(self, format, data):
         decoded = struct.unpack(format, data)
         return decoded
 
     def deserialize(self, operation, data):
+        print("DESERIALIZE:",operation, "THREAD:", threading.current_thread().name )
         self.game.states[-1].online(operation, data)
 
     # receive exact data needed based on size of packets
@@ -43,6 +41,7 @@ class NetworkManager:
         return data
 
     def run_listener(self):
+        print("RUN LISTENER STARTED")
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, True)
             s.connect((self.host, self.port))

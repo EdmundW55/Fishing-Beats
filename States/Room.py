@@ -29,8 +29,8 @@ class Room(state):
     def online(self, operation, data):
         if operation == 4:
             decoded = data.decode()
-            room_info = json.loads(decoded)
-            roomData = room_info["room"]
+            roomInfo = json.loads(decoded)
+            roomData = roomInfo["room"]
             print(roomData)
 
 
