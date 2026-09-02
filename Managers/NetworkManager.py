@@ -16,6 +16,7 @@ class NetworkManager:
         self.game = game
 
     def send_data(self, operation, message=b""):
+        # send operation + message/data to server
         packet = struct.pack("!BI", operation, len(message)) + message
         self.socket.sendall(packet)
 
@@ -24,7 +25,7 @@ class NetworkManager:
         return decoded
 
     def deserialize(self, operation, data):
-        print("DESERIALIZE:",operation, "THREAD:", threading.current_thread().name )
+        # make states do the work
         self.game.states[-1].online(operation, data)
 
     # receive exact data needed based on size of packets
@@ -41,7 +42,6 @@ class NetworkManager:
         return data
 
     def run_listener(self):
-        print("RUN LISTENER STARTED")
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, True)
             s.connect((self.host, self.port))
