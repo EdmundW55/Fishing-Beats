@@ -26,11 +26,17 @@ class Assets():
         self.backButton = ImgLoad("Backbutton", 1)
         self.enterButton = ImgLoad("EnterButton", 1)
         self.createButton = ImgLoad("CreateRoomButton", 1)
+        self.readyButton = ImgLoad("ReadyButton", 1)
+        self.unreadyButton = ImgLoad("UnreadyButton", 1)
         self.fish = ImgLoad("fish", 1)
         self.fish2 = ImgLoad("fish2", 1)
         self.box = ImgLoad("box", 1)
         self.boxSelected = ImgLoad("box_selected", 1)
         self.box2 = ImgLoad("box2", 1)
+        self.crown = ImgLoad("Crown", 1)
+        self.playerDisplay = ImgLoad("PlayerDisplay", 1)
+        self.playerDisplayReady = ImgLoad("ReadyPlayerDisplay", 1)
+        self.playerDisplayNoMap = ImgLoad("PlayerDisplayNoMap", 1)
 
 
     # get size of assets

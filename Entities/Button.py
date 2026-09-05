@@ -54,7 +54,7 @@ class button(pygame.sprite.Sprite):
                             self.enabled = False
 
                         if self.directory is not None:
-                            self.action(self.directory, self)
+                            self.action(self)
                         elif self.extraData is not None:
                             self.action(self.extraData)
                         else:
@@ -88,6 +88,13 @@ class button(pygame.sprite.Sprite):
 
     def enable_toggle(self, action):
         self.enabled = action
+
+    def change_text(self, text):
+        self.textStore = text
+        self.image.blit(self.imageStore[0], (0,0))
+        self.text = self.game.text.smallFont.render(text, True, (255, 255, 255))
+        w, h = self.game.text.smallFont.size(text)
+        self.image.blit(self.text, (10, (self.rect.height - h) / 2))
 
 class buttonG(pygame.sprite.Group):#make a group
     def __init__(self, *args):

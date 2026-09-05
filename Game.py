@@ -1,6 +1,6 @@
 import pygame
 import sys
-from Managers import ImageLoader, TextManager, NetworkManager
+from Managers import ImageLoader, TextManager, NetworkManager, FileManager
 
 
 class Game:
@@ -8,10 +8,12 @@ class Game:
         self.screen = screen
         self.clock = clock
         self.states = []
+        self.songStore = []
         self.screenWidth, self.screenHeight = pygame.display.get_window_size()
         self.assets = ImageLoader.Assets()
         self.text = TextManager.TextManager()
         self.network = NetworkManager.NetworkManager(self)
+        self.file = FileManager.FileManager(self)
         self.running = True
 
     def push_state(self, state):
@@ -39,9 +41,11 @@ class Game:
                 self.states[-1].update(dt)
                 self.states[-1].draw(self.screen)
             except IndexError as e:
+                print("e")
                 self.running = False
 
             pygame.display.flip()
+        print("a")
         pygame.quit()
         sys.exit()
 

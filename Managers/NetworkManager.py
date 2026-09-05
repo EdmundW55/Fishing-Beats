@@ -2,6 +2,8 @@ import socket
 import struct
 import time
 import threading
+import os
+import json
 
 class NetworkManager:
     def __init__(self, game, host="127.0.0.1", port=62743):
@@ -19,6 +21,45 @@ class NetworkManager:
         # send operation + message/data to server
         packet = struct.pack("!BI", operation, len(message)) + message
         self.socket.sendall(packet)
+
+    def send_file(self, path, folderName):
+        fileName = os.path.basename(path)
+        fileSize = os.path.getsize(path)
+
+        metadata = {
+            "fileName": fileName,
+            "folderName": folderName,
+            "size": fileSize
+        }
+
+        meta_json = json.dumps(metadata).encode("utf-8")
+        # send meta data
+        self.send_data(11, meta_json)
+
+        # 64 kb chunks sent
+        Chunk_Size = 64 * 1024
+
+        with open(path, "rb") as f:
+            while True:
+
+                chunk = f.read(Chunk_Size)
+                if not chunk:
+                    break
+
+                self.send_data(12, chunk)
+        # send end of file
+        self.send_data(13)
+        print(f"Finished sending {fileName} to server")
+
+    def send_map(self):
+        songPath = os.path.join(self.game.songStore[0], self.game.songStore[1] + ".mp3")
+        mapPath = os.path.join(self.game.songStore[0], self.game.songStore[1] + ".txt")
+        folderName = os.path.basename(self.game.songStore[0])
+        if os.path.isfile(mapPath):
+            self.send_file(mapPath, folderName)
+
+        if os.path.isfile(songPath):
+            self.send_file(songPath, folderName)
 
     def decode_data(self, format, data):
         decoded = struct.unpack(format, data)
