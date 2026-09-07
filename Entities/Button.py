@@ -89,9 +89,9 @@ class button(pygame.sprite.Sprite):
     def enable_toggle(self, action):
         self.enabled = action
 
-    def change_text(self, text):
+    def change_text(self, text, img = 0):
         self.textStore = text
-        self.image.blit(self.imageStore[0], (0,0))
+        self.image.blit(self.imageStore[img], (0,0))
         self.text = self.game.text.smallFont.render(text, True, (255, 255, 255))
         w, h = self.game.text.smallFont.size(text)
         self.image.blit(self.text, (10, (self.rect.height - h) / 2))

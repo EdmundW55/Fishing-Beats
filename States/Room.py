@@ -1,6 +1,5 @@
 from Entities.Button import *
 from Entities.PlayerDisplay import *
-from Managers.ImageLoader import Assets
 from States.BaseState import state
 import json
 from States.OnlineMapSelect import OnlineMapSelect
@@ -13,6 +12,7 @@ class Room(state):
         self.playerGroup = PlayerDisplayG()
         self.ready = False
         self.songSelector = None
+        self.song = ""
         self.host = False
         self.download = False
 
@@ -95,10 +95,19 @@ class Room(state):
             decoded = data.decode()
             data = json.loads(decoded)
             dir = data["map"]
+            print(dir)
+            self.song = dir
             self.game.file.Check_File(dir)
         elif operation == 14:
             decoded = self.game.network.decode_data("!?", data)[0]
-            print(decoded)
+            if decoded:
+                songName = self.song.split("-", 1)[1]
+                self.songSelector.change_text(songName)
+                self.game.music.set_song(self.song, songName)
+                self.game.music.play()
+            else:
+                self.download = True
+                self.songSelector.change_text("Missing Map", 1)
 
 
 
