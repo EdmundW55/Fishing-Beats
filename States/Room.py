@@ -13,11 +13,13 @@ class Room(state):
         self.playerGroup = PlayerDisplayG()
         self.ready = False
         self.songSelector = None
+        self.host = False
+        self.download = False
 
     def enter(self):
         buttonWidth, buttonHeight = self.game.assets.size(self.game.assets.box)
         self.songSelector = button(self.game, self.SelectSong, self.game.screenWidth - buttonWidth, (self.game.screenHeight - buttonHeight)/2,
-                        False, self.game.assets.box, text="Select Song")
+                        False, self.game.assets.box, secondImage=self.game.assets.box2, text="Select Song")
         ready = button(self.game, self.readyUp, self.game.screenWidth - 410, self.game.screenHeight - 75, False,
                        self.game.assets.readyButton, secondImage=self.game.assets.unreadyButton)
         back = button(self.game, self.back, 0, self.game.screenHeight - 75, False, self.game.assets.backButton)
@@ -49,16 +51,21 @@ class Room(state):
         self.game.pop_state()
 
     def SelectSong(self):
-        self.game.push_state(OnlineMapSelect(self.game, self))
+        if self.host:
+            self.game.push_state(OnlineMapSelect(self.game, self))
+        else:
+            if self.download:
+                self.game.network.send_data(6)
 
     def online(self, operation, data):
-        decoded = data.decode()
         if operation == 3:
+            decoded = data.decode()
             player = json.loads(decoded)
             playerDis = PlayerDisplay(self.game, 50, 50 + 75 * len(self.playerGroup), 650, 60, False,
                                    player["player"][0], player["player"][1])
             self.playerGroup.add(playerDis)
         elif operation == 4:
+            decoded = data.decode()
             roomInfo = json.loads(decoded)
             print(roomInfo)
             roomData = roomInfo["room"]
@@ -66,18 +73,32 @@ class Room(state):
                 playerDis = PlayerDisplay(self.game, 50, 50 + 75 * count, 650, 60, player["id"] == roomData["host"],
                               player["id"], player["username"], player["ready"])
                 self.playerGroup.add(playerDis)
+            if roomData["host"] != self.game.playerID:
+                if self.songSelector:
+                    self.host = False
+            else:
+                self.host = True
         elif operation == 5:
+            decoded = data.decode()
             data = json.loads(decoded)
             player = data["player"]
             host = data["host"]
             self.playerGroup.Leave(player, host)
+            if host == self.game.playerID:
+                self.host = True
         elif operation == 7:
+            decoded = data.decode()
             data = json.loads(decoded)
             player = data["player"]
             self.playerGroup.Set_Display(player)
-
-
-
+        elif operation == 13:
+            decoded = data.decode()
+            data = json.loads(decoded)
+            dir = data["map"]
+            self.game.file.Check_File(dir)
+        elif operation == 14:
+            decoded = self.game.network.decode_data("!?", data)[0]
+            print(decoded)
 
 
 

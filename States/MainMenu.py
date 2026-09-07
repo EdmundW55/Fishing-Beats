@@ -4,7 +4,7 @@ from States.MapSelect import MapSelect
 from States.MapMaker import MapMaker
 from States.OnlineStart import OnlineStart
 from States.Settings import Settings
-
+import json
 
 
 class MainMenu(state):
@@ -69,3 +69,12 @@ class MainMenu(state):
 
     def quit_game(self):
         self.game.pop_state()
+
+    def online(self, operation, data):
+        decoded = data.decode()
+        if operation == 0:
+            data = json.loads(decoded)
+            playerInfo = data["player"]
+            self.game.playerID = playerInfo[0]
+            self.game.playerName = playerInfo[1]
+            print(playerInfo)

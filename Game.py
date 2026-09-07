@@ -16,6 +16,9 @@ class Game:
         self.file = FileManager.FileManager(self)
         self.running = True
 
+        self.playerID = -1
+        self.playerUsername = ""
+
     def push_state(self, state):
         self.states.append(state)
         state.enter()
@@ -41,7 +44,7 @@ class Game:
                 self.states[-1].update(dt)
                 self.states[-1].draw(self.screen)
             except IndexError as e:
-                print("e")
+                print(e)
                 self.running = False
 
             pygame.display.flip()
