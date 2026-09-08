@@ -91,13 +91,23 @@ class Room(state):
             data = json.loads(decoded)
             player = data["player"]
             self.playerGroup.Set_Display(player)
+        elif operation == 11:
+            self.game.file.Start_File(data)
+        elif operation == 12:
+            self.game.file.Get_Chunk(data)
         elif operation == 13:
             decoded = data.decode()
+            if decoded == "":
+                self.game.file.End_File()
+                return
             data = json.loads(decoded)
             dir = data["map"]
             print(dir)
             self.song = dir
-            self.game.file.Check_File(dir)
+            check = self.game.file.Check_File(dir)
+            if not check:
+                self.download = True
+                self.songSelector.change_text("Missing Map", 1)
         elif operation == 14:
             decoded = self.game.network.decode_data("!?", data)[0]
             if decoded:

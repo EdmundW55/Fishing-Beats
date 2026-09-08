@@ -98,7 +98,7 @@ class Playing(state):
         self.buttonGroup.add(exitmap)
 
         self.pole.add(FishingP)
-        self.mapPlay(self.song + ".mp3", "Maps/"+self.directory)
+        self.mapPlay(self.song + ".mp3", self.directory)
 
     def quit(self):
         self.game.pop_state()

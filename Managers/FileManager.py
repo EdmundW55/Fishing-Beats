@@ -9,6 +9,9 @@ class FileManager:
         self.uploadFile = None
         self.uploadFilename = None
         self.sha256 = hashlib.sha256()
+        self.gotTxt = False
+        self.gotMp3 = False
+
     def Start_File(self, data):
         metaData = json.loads(data.decode("utf-8"))
 
@@ -31,7 +34,7 @@ class FileManager:
 
         self.uploadFile.write(data)
 
-    def End_File(self, data):
+    def End_File(self):
         if self.uploadFile is not None:
             self.uploadFile.close()
 
@@ -55,5 +58,9 @@ class FileManager:
                     self.sha256.update(chunk)
             digest = self.sha256.hexdigest()
             digest = digest.encode("utf-8")
-
+            print("sending check")
             self.game.network.send_data(14, digest)
+            return True
+        else:
+            return False
+

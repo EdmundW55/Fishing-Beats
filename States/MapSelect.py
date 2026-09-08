@@ -60,11 +60,12 @@ class MapSelect(state):
             screen.blit(EelCount, (wf+5, h+h2-5))
 
 
-    def play_map(self, directory, entity):
+    def play_map(self, entity):
         if self.pressed == entity:
             self.pressed = None
-            song = directory.split("-", 1)[1]
-            self.game.push_state(Playing(self.game, song, directory))
+            if self.game.songStore != self.songStore:
+                self.game.songStore = self.songStore
+            self.game.push_state(Playing(self.game, self.songStore[1], self.songStore[0]))
         else:
             self.pressed = entity
             self.play_song(entity)
