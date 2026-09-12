@@ -8,6 +8,6 @@ Currently being rewritten
 
 </div>
 <br>
-Current Goal: Rewriting online multiplayer
+**Current Goal**: Rewriting online multiplayer
 <br>
-Next Goal: Looks or maybe gameplay
+**Next Goal**: Looks or maybe gameplay
