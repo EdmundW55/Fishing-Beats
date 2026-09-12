@@ -9,4 +9,5 @@ Currently being rewritten
 </div>
 
 __Current Goal__ : Rewriting online multiplayer
+<br>
 __Next Goal__ : Looks or maybe gameplay
