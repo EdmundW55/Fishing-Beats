@@ -7,8 +7,6 @@ Currently being rewritten
 ![Fish bigger](Assets/fish2.png)
 
 </div>
-<br>
 
 __Current Goal__ : Rewriting online multiplayer
-
 __Next Goal__ : Looks or maybe gameplay
