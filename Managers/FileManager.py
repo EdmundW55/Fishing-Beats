@@ -34,12 +34,20 @@ class FileManager:
 
         self.uploadFile.write(data)
 
-    def End_File(self):
+    def End_File(self, room):
         if self.uploadFile is not None:
             self.uploadFile.close()
 
             print(f"Finished uploading {self.uploadFilename}")
+            if self.uploadFilename.endswith(".txt"):
+                self.gotTxt = True
+            elif self.uploadFilename.endswith(".mp3"):
+                self.gotMp3 = True
 
+        if self.gotTxt and self.gotMp3:
+            self.gotTxt = False
+            self.gotMp3 = False
+            room.downloaded()
         self.uploadFile = None
         self.uploadFilename = None
 

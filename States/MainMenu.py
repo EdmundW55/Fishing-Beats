@@ -68,6 +68,7 @@ class MainMenu(state):
         self.game.push_state(Settings(self.game))
 
     def quit_game(self):
+        self.game.network.disconnect()
         self.game.pop_state()
 
     def online(self, operation, data):

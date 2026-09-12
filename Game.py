@@ -1,6 +1,6 @@
 import pygame
 import sys
-from Managers import ImageLoader, TextManager, NetworkManager, FileManager, MusicManager
+from Managers import ImageLoader, TextManager, NetworkManager, FileManager, MusicManager, PlayerManager
 
 
 class Game:
@@ -15,6 +15,7 @@ class Game:
         self.network = NetworkManager.NetworkManager(self)
         self.file = FileManager.FileManager(self)
         self.music = MusicManager.MusicManager(self)
+        self.player = PlayerManager.PlayerManager(self)
         self.running = True
 
         self.playerID = -1

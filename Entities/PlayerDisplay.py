@@ -67,6 +67,11 @@ class PlayerDisplayG(pygame.sprite.Group):#make a group
                 state = bool.from_bytes(player[1].encode('utf-8'), byteorder='big')
                 sprite.Set_Display(state)
 
+    def Set_Display_Map(self, player, state):
+        for sprite in self:
+            if sprite.playerID == player:
+                sprite.Set_Display(state)
+
     def Reorder(self, host = None):
         for count, sprite in enumerate(self):
             sprite.Reorder(count, host)

@@ -11,7 +11,8 @@ class NetworkManager:
         self.host = host
         self.port = port
         self.socket = None
-        self.kill = False
+        self.thread = None
+        self.stopThread = threading.Event()
         # (unsigned) char + integer
         self.headerFormat = b'!BI'
         self.headerSize = struct.calcsize(self.headerFormat)
@@ -91,7 +92,7 @@ class NetworkManager:
             print("connected", s)
             self.socket = s
             self.connected = True
-            while not self.kill:
+            while not self.stopThread.is_set():
                 try:
                     header = self.recv_exact(self.headerSize)
                     if header is None:
@@ -109,4 +110,11 @@ class NetworkManager:
                 time.sleep(0.001)
 
     def connect_online(self):
-        threading.Thread(target=self.run_listener).start()
+        self.thread = threading.Thread(target=self.run_listener)
+        self.thread.start()
+
+    def disconnect(self):
+        self.stopThread.set()
+        if self.thread:
+            self.thread.join()
+            self.thread = None

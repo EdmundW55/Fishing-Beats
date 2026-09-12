@@ -12,6 +12,7 @@ class Room(state):
         self.playerGroup = PlayerDisplayG()
         self.ready = False
         self.songSelector = None
+        self.readyButton = None
         self.song = ""
         self.host = False
         self.download = False
@@ -20,11 +21,15 @@ class Room(state):
         buttonWidth, buttonHeight = self.game.assets.size(self.game.assets.box)
         self.songSelector = button(self.game, self.SelectSong, self.game.screenWidth - buttonWidth, (self.game.screenHeight - buttonHeight)/2,
                         False, self.game.assets.box, secondImage=self.game.assets.box2, text="Select Song")
-        ready = button(self.game, self.readyUp, self.game.screenWidth - 410, self.game.screenHeight - 75, False,
+        self.readyButton = button(self.game, self.readyUp, self.game.screenWidth - 410, self.game.screenHeight - 75, False,
                        self.game.assets.readyButton, secondImage=self.game.assets.unreadyButton)
+        w, _ = self.game.assets.size(self.game.assets.playButton)
+        play = button(self.game, self.readyUp, self.game.screenWidth - w, self.game.screenHeight - 75, False,
+                      self.game.assets.playButton, secondImage=self.game.assets.playButton)
         back = button(self.game, self.back, 0, self.game.screenHeight - 75, False, self.game.assets.backButton)
         self.buttonGroup.add(self.songSelector)
-        self.buttonGroup.add(ready)
+        self.buttonGroup.add(self.readyButton)
+        self.buttonGroup.add(play)
         self.buttonGroup.add(back)
         self.game.network.send_data(4)
 
@@ -44,6 +49,10 @@ class Room(state):
 
     def readyUp(self):
         self.ready = not self.ready
+        if self.ready:
+            self.readyButton.swap_image(1)
+        else:
+            self.readyButton.swap_image(0)
         self.game.network.send_data(7, self.ready.to_bytes())
 
     def back(self):
@@ -56,6 +65,28 @@ class Room(state):
         else:
             if self.download:
                 self.game.network.send_data(6)
+
+    def downloaded(self):
+        songName = self.song.split("-", 1)[1]
+        self.songSelector.change_text(songName)
+        self.game.music.set_song(self.song, songName)
+        self.game.music.play()
+        data = {
+            "player": self.game.playerID,
+            "operation": 0,
+            "data": {
+                "missing": False
+            }
+        }
+
+        jsonData = json.dumps(data).encode("utf-8")
+        self.game.network.send_data(15, jsonData)
+
+    def play(self):
+        pass
+        # send message to sever to start game
+        # send message to server to start
+        # players send data back when map is loaded?
 
     def online(self, operation, data):
         if operation == 3:
@@ -98,8 +129,9 @@ class Room(state):
         elif operation == 13:
             decoded = data.decode()
             if decoded == "":
-                self.game.file.End_File()
+                self.game.file.End_File(self)
                 return
+
             data = json.loads(decoded)
             dir = data["map"]
             print(dir)
@@ -108,6 +140,16 @@ class Room(state):
             if not check:
                 self.download = True
                 self.songSelector.change_text("Missing Map", 1)
+                data = {
+                    "player": self.game.playerID,
+                    "operation": 0,
+                    "data": {
+                        "missing": True
+                    }
+                }
+                print(data)
+                jsonData = json.dumps(data).encode("utf-8")
+                self.game.network.send_data(15, jsonData)
         elif operation == 14:
             decoded = self.game.network.decode_data("!?", data)[0]
             if decoded:
@@ -117,7 +159,26 @@ class Room(state):
                 self.game.music.play()
             else:
                 self.download = True
+                data = {
+                    "player": self.game.playerID,
+                    "operation": 0,
+                    "data": {
+                        "missing": True
+                    }
+                }
+
+                jsonData = json.dumps(data).encode("utf-8")
+                self.game.network.send_data(15, jsonData)
                 self.songSelector.change_text("Missing Map", 1)
+        elif operation == 15:
+            decoded = data.decode()
+            jsonData = json.loads(decoded)
+            self.game.player.Use(jsonData, self)
+
+
+
+
+
 
 
 
