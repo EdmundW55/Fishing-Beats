@@ -23,6 +23,10 @@ class NetworkManager:
         packet = struct.pack("!BI", operation, len(message)) + message
         self.socket.sendall(packet)
 
+    def pack(self, format, data):
+        return struct.pack(format, data)
+
+
     def send_file(self, path, folderName):
         fileName = os.path.basename(path)
         fileSize = os.path.getsize(path)

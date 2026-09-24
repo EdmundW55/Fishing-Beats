@@ -64,8 +64,7 @@ class PlayerDisplayG(pygame.sprite.Group):#make a group
     def Set_Display(self, player):
         for sprite in self:
             if sprite.playerID == player[0]:
-                state = bool.from_bytes(player[1].encode('utf-8'), byteorder='big')
-                sprite.Set_Display(state)
+                sprite.Set_Display(player[1])
 
     def Set_Display_Map(self, player, state):
         for sprite in self:

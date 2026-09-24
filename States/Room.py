@@ -52,7 +52,8 @@ class Room(state):
                 self.readyButton.swap_image(1)
             else:
                 self.readyButton.swap_image(2)
-            self.game.network.send_data(7, self.ready.to_bytes())
+            data = self.game.network.pack("!?", self.ready)
+            self.game.network.send_data(7, data)
 
     def back(self):
         self.game.network.send_data(5)
@@ -81,8 +82,8 @@ class Room(state):
         jsonData = json.dumps(data).encode("utf-8")
         self.game.network.send_data(15, jsonData)
 
-    def play(self):
-        pass
+    def StartMatch(self):
+        self.game.network.send_data(8)
         # send message to sever to start game
         # send message to server to start
         # players send data back when map is loaded?
@@ -110,7 +111,7 @@ class Room(state):
             else:
                 self.host = True
                 w, _ = self.game.assets.size(self.game.assets.playButton)
-                self.play = button(self.game, self.readyUp, self.game.screenWidth - w, self.game.screenHeight - 75,
+                self.play = button(self.game, self.StartMatch, self.game.screenWidth - w, self.game.screenHeight - 75,
                                    False, self.game.assets.playButton, secondImage=self.game.assets.playButton)
                 self.buttonGroup.add(self.play)
             if len(self.playerGroup) > 1:
@@ -124,7 +125,7 @@ class Room(state):
             if host == self.game.playerID:
                 self.host = True
                 w, _ = self.game.assets.size(self.game.assets.playButton)
-                self.play = button(self.game, self.readyUp, self.game.screenWidth - w, self.game.screenHeight - 75,
+                self.play = button(self.game, self.StartMatch, self.game.screenWidth - w, self.game.screenHeight - 75,
                                    False, self.game.assets.playButton, secondImage=self.game.assets.playButton)
                 self.buttonGroup.add(self.play)
             if len(self.playerGroup) == 1:
