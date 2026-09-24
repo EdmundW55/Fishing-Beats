@@ -4,3 +4,4 @@ __pycache__/
 Maps/**/*.mp3
 rooms/
 Server.py
+Test.py
