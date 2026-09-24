@@ -34,3 +34,9 @@ class state():
         Drawing on screen
         """
         pass
+
+    def lateDraw(self, screen):
+        """
+        Drawing on screen after inital draw
+        """
+        pass

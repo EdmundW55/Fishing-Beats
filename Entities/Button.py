@@ -11,7 +11,10 @@ class button(pygame.sprite.Sprite):
             self.image = image.copy()
             self.imageStore = [image.copy()]
             if secondImage is not None:
-                self.imageStore.append(secondImage.copy())
+                if isinstance(secondImage, list):
+                    self.imageStore += secondImage
+                else:
+                    self.imageStore.append(secondImage.copy())
             else:
                 self.imageStore.append(image.copy())
         else:

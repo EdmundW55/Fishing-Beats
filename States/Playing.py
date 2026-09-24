@@ -91,6 +91,8 @@ class Playing(state):
 
         self.directory = directory
         self.song = song
+        self.start = False
+        self.num = 3
 
     def enter(self):
         FishingP = FishingPole(2, self.game)
@@ -99,6 +101,7 @@ class Playing(state):
 
         self.pole.add(FishingP)
         self.mapPlay(self.song + ".mp3", self.directory)
+        self.countdown()
 
     def quit(self):
         self.game.pop_state()
@@ -126,12 +129,33 @@ class Playing(state):
                     self.pole.update(False)
 
     def update(self, dt):
-        self.fishGroup.update()
-        if len(self.fishGroup) <= 0:
-            self.game.updateScreen()
-            pygame.mixer.music.fadeout(2500)
-            mixer.music.unload()
-            self.quit()
+        if self.start:
+            self.fishGroup.update()
+            if len(self.fishGroup) <= 0:
+                self.game.updateScreen()
+                pygame.mixer.music.fadeout(2500)
+                mixer.music.unload()
+                self.quit()
+
+    def countdown(self):
+        count = self.num + 1
+        for x in range(count):
+            print("a")
+            self.draw(self.game.screen)
+            if self.num != 0:
+                numdis = self.game.text.bigFont.render(str(self.num), True, (255, 255, 255))
+                w, h = self.game.text.bigFont.size(str(self.num))
+            else:
+                numdis = self.game.text.bigFont.render("Go", True, (255, 255, 255))
+                w, h = self.game.text.bigFont.size("Go")
+            self.game.screen.blit(numdis, ((self.game.screenWidth - w)/2, (self.game.screenHeight - h)/2))
+            self.num -= 1
+            pygame.display.update()
+            pygame.time.delay(1000)
+
+            if self.num == 0:
+                self.start = True
+        mixer.music.play()
 
     def draw(self, screen):
         screen.fill((0, 0, 0))
@@ -205,8 +229,9 @@ class Playing(state):
             if count[0] == "fish":
                 fishEntity = fish(int(count[1]), int(count[2]), int(count[3]), int(count[4]), self.game.screenWidth, self)  # (pos, lane, size, speed)
                 self.fishGroup.add(fishEntity)
-
         mixer.music.load(os.path.join(directory, song))
         mixer.music.set_volume(0.5)
-        mixer.music.play()
+
+
+
 

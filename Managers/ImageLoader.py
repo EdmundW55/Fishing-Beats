@@ -28,6 +28,7 @@ class Assets():
         self.createButton = ImgLoad("CreateRoomButton", 1)
         self.readyButton = ImgLoad("ReadyButton", 1)
         self.unreadyButton = ImgLoad("UnreadyButton", 1)
+        self.disabledReadyButton = ImgLoad("DisabledReadyButton", 1)
         self.fish = ImgLoad("fish", 1)
         self.fish2 = ImgLoad("fish2", 1)
         self.box = ImgLoad("box", 1)

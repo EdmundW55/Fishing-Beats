@@ -13,6 +13,7 @@ class Room(state):
         self.ready = False
         self.songSelector = None
         self.readyButton = None
+        self.play = None
         self.song = ""
         self.host = False
         self.download = False
@@ -22,14 +23,11 @@ class Room(state):
         self.songSelector = button(self.game, self.SelectSong, self.game.screenWidth - buttonWidth, (self.game.screenHeight - buttonHeight)/2,
                         False, self.game.assets.box, secondImage=self.game.assets.box2, text="Select Song")
         self.readyButton = button(self.game, self.readyUp, self.game.screenWidth - 410, self.game.screenHeight - 75, False,
-                       self.game.assets.readyButton, secondImage=self.game.assets.unreadyButton)
-        w, _ = self.game.assets.size(self.game.assets.playButton)
-        play = button(self.game, self.readyUp, self.game.screenWidth - w, self.game.screenHeight - 75, False,
-                      self.game.assets.playButton, secondImage=self.game.assets.playButton)
+                       self.game.assets.disabledReadyButton, secondImage=[self.game.assets.unreadyButton, self.game.assets.readyButton])
+
         back = button(self.game, self.back, 0, self.game.screenHeight - 75, False, self.game.assets.backButton)
         self.buttonGroup.add(self.songSelector)
         self.buttonGroup.add(self.readyButton)
-        self.buttonGroup.add(play)
         self.buttonGroup.add(back)
         self.game.network.send_data(4)
 
@@ -48,12 +46,13 @@ class Room(state):
         self.playerGroup.draw(screen)
 
     def readyUp(self):
-        self.ready = not self.ready
-        if self.ready:
-            self.readyButton.swap_image(1)
-        else:
-            self.readyButton.swap_image(0)
-        self.game.network.send_data(7, self.ready.to_bytes())
+        if len(self.playerGroup) > 1:
+            self.ready = not self.ready
+            if self.ready:
+                self.readyButton.swap_image(1)
+            else:
+                self.readyButton.swap_image(2)
+            self.game.network.send_data(7, self.ready.to_bytes())
 
     def back(self):
         self.game.network.send_data(5)
@@ -95,6 +94,8 @@ class Room(state):
             playerDis = PlayerDisplay(self.game, 50, 50 + 75 * len(self.playerGroup), 650, 60, False,
                                    player["player"][0], player["player"][1])
             self.playerGroup.add(playerDis)
+            if len(self.playerGroup) == 2:
+                self.readyButton.swap_image(2)
         elif operation == 4:
             decoded = data.decode()
             roomInfo = json.loads(decoded)
@@ -105,10 +106,15 @@ class Room(state):
                               player["id"], player["username"], player["ready"])
                 self.playerGroup.add(playerDis)
             if roomData["host"] != self.game.playerID:
-                if self.songSelector:
-                    self.host = False
+                self.host = False
             else:
                 self.host = True
+                w, _ = self.game.assets.size(self.game.assets.playButton)
+                self.play = button(self.game, self.readyUp, self.game.screenWidth - w, self.game.screenHeight - 75,
+                                   False, self.game.assets.playButton, secondImage=self.game.assets.playButton)
+                self.buttonGroup.add(self.play)
+            if len(self.playerGroup) > 1:
+                self.readyButton.swap_image(2)
         elif operation == 5:
             decoded = data.decode()
             data = json.loads(decoded)
@@ -117,6 +123,13 @@ class Room(state):
             self.playerGroup.Leave(player, host)
             if host == self.game.playerID:
                 self.host = True
+                w, _ = self.game.assets.size(self.game.assets.playButton)
+                self.play = button(self.game, self.readyUp, self.game.screenWidth - w, self.game.screenHeight - 75,
+                                   False, self.game.assets.playButton, secondImage=self.game.assets.playButton)
+                self.buttonGroup.add(self.play)
+            if len(self.playerGroup) == 1:
+                self.readyButton.swap_image(0)
+                self.ready = False
         elif operation == 7:
             decoded = data.decode()
             data = json.loads(decoded)
