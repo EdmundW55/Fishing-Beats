@@ -3,6 +3,7 @@ from Entities.PlayerDisplay import *
 from States.BaseState import state
 import json
 from States.OnlineMapSelect import OnlineMapSelect
+from States.OnlinePlay import OnlinePlay
 
 
 class Room(state):
@@ -136,6 +137,8 @@ class Room(state):
             data = json.loads(decoded)
             player = data["player"]
             self.playerGroup.Set_Display(player)
+        elif operation == 8:
+            self.game.push_state(OnlinePlay(self.game, self.game.music.song, self.game.music.directory))
         elif operation == 11:
             self.game.file.Start_File(data)
         elif operation == 12:
